@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Negotiation Example</title>
+</head>
+<body>
+    <h1>Content Negotiation Example</h1>
+    <div id="content"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const acceptHeader = navigator.userAgent.includes("rdf+xml") || navigator.userAgent.includes("json") ? "application/rdf+xml" : "text/html";
+
+            if (acceptHeader === "application/rdf+xml") {
+                fetch('https://raw.githubusercontent.com/LuciaPauw/conneg-test/master/aia.owl')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('content').textContent = data;
+                    })
+                    .catch(error => console.error('Error fetching RDF/XML content:', error));
+            } else {
+                fetch('https://raw.githubusercontent.com/LuciaPauw/conneg-test/master/aiadoc.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('content').innerHTML = data;
+                    })
+                    .catch(error => console.error('Error fetching HTML content:', error));
+            }
+        });
+    </script>
+</body>
+</html>
